@@ -9,15 +9,17 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome!")
+	fmt.Fprint(w, "Welcome!\n")
 }
 
 func TodoIndex(w http.ResponseWriter, r *http.Request) {
 	todos := Todos{
-		Todo{Name: "My Todo"},
-		Todo{Name: "My Todo"},
+		Todo{Name: "Write presentation"},
+		Todo{Name: "Host meetup"},
 	}
 
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(todos); err != nil {
 		panic(err)
 	}
@@ -26,5 +28,5 @@ func TodoIndex(w http.ResponseWriter, r *http.Request) {
 func TodoShow(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	todoId := vars["todoId"]
-	fmt.Fprintf(w, "Todo Show:", todoId)
+	fmt.Fprintf(w, "Todo show: %s\n", todoId)
 }
